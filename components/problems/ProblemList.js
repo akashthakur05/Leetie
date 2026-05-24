@@ -4,11 +4,12 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { parseCSV } from '@/lib/csv'
 import { sortProblems, filterProblems, deduplicateProblems } from '@/lib/filters'
 import { useProblemState } from '@/lib/storage'
+import { getCompanyLogoUrl } from '@/lib/companyLogos'
 import ProblemRow from './ProblemRow'
 import FilterBar from './FilterBar'
 import StatsBar from './StatsBar'
 import CompanySelector from './CompanySelector'
-import { Loader, Search, Zap } from 'lucide-react'
+import { Loader, Search, Building2 } from 'lucide-react'
 
 const DEFAULT_FILTERS = {
   range: 'all',
@@ -18,50 +19,68 @@ const DEFAULT_FILTERS = {
   starred: false,
 }
 
-// Each company gets a color from this palette — purely visual on the landing page
-const COMPANY_COLORS = [
-  { bg: 'rgba(248,81,73,0.12)',   border: 'rgba(248,81,73,0.35)',   text: '#f85149' },
-  { bg: 'rgba(88,166,255,0.11)',  border: 'rgba(88,166,255,0.35)',  text: '#58a6ff' },
-  { bg: 'rgba(63,185,80,0.11)',   border: 'rgba(63,185,80,0.35)',   text: '#3fb950' },
-  { bg: 'rgba(240,136,62,0.12)',  border: 'rgba(240,136,62,0.35)',  text: '#f0883e' },
-  { bg: 'rgba(188,140,255,0.12)', border: 'rgba(188,140,255,0.35)', text: '#bc8cff' },
-  { bg: 'rgba(210,153,34,0.12)',  border: 'rgba(210,153,34,0.35)',  text: '#d29922' },
-  { bg: 'rgba(248,81,73,0.12)',   border: 'rgba(248,81,73,0.35)',   text: '#f85149' },
-  { bg: 'rgba(88,166,255,0.11)',  border: 'rgba(88,166,255,0.35)',  text: '#58a6ff' },
-  { bg: 'rgba(63,185,80,0.11)',   border: 'rgba(63,185,80,0.35)',   text: '#3fb950' },
-  { bg: 'rgba(188,140,255,0.12)', border: 'rgba(188,140,255,0.35)', text: '#bc8cff' },
+const FAANG = [
+  'Amazon','Apple','Google','Microsoft','Netflix',
+  'Meta','Uber','Airbnb','Adobe','Bloomberg',
 ]
 
-const FAANG = [
-  'Amazon', 'Apple', 'Google', 'Microsoft', 'Netflix',
-  'Meta', 'Uber', 'Airbnb', 'Adobe', 'Bloomberg',
-]
+const TYPING_TEXT = 'Select a/multiple company/ies to begin'
+const TYPING_SPEED = 42
 
 const dataCache = {}
 
-// Animated "Select a company to begin" heading
+function CompanyIcon({ name, size = 14 }) {
+  const [imgFailed, setImgFailed] = useState(false)
+  const url = getCompanyLogoUrl(name)
+
+  if (!url || imgFailed) {
+    return <Building2 size={size} style={{ flexShrink: 0 }} />
+  }
+  return (
+    <img
+      src={url}
+      alt=""
+      width={size}
+      height={size}
+      style={{ flexShrink: 0, objectFit: 'contain' }}
+      onError={() => setImgFailed(true)}
+    />
+  )
+}
+
 function AnimatedHeading() {
-  const full = 'Select a/multiple company/ies to begin'
   const [displayed, setDisplayed] = useState('')
-  const [done, setDone] = useState(false)
+  const [phase, setPhase] = useState('typing') // typing | pause | erasing
 
   useEffect(() => {
-    let i = 0
-    const id = setInterval(() => {
-      i++
-      setDisplayed(full.slice(0, i))
-      if (i >= full.length) { clearInterval(id); setDone(true) }
-    }, 38)
-    return () => clearInterval(id)
-  }, [])
+    let timeout
+
+    if (phase === 'typing') {
+      if (displayed.length < TYPING_TEXT.length) {
+        timeout = setTimeout(() => setDisplayed(TYPING_TEXT.slice(0, displayed.length + 1)), TYPING_SPEED)
+      } else {
+        timeout = setTimeout(() => setPhase('pause'), 2200)
+      }
+    } else if (phase === 'pause') {
+      setPhase('erasing')
+    } else if (phase === 'erasing') {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(TYPING_TEXT.slice(0, displayed.length - 1)), 22)
+      } else {
+        timeout = setTimeout(() => setPhase('typing'), 600)
+      }
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayed, phase])
 
   return (
     <p style={{
       fontSize: 13, color: 'var(--text-muted)', letterSpacing: '0.01em',
-      marginBottom: 22, minHeight: 20, textAlign: 'center',
+      marginBottom: 24, minHeight: 20, textAlign: 'center',
     }}>
       {displayed}
-      {!done && <span className="cursor" style={{ color: 'var(--accent)' }}>|</span>}
+      <span className="cursor" style={{ color: 'var(--accent)', marginLeft: 1 }}>|</span>
     </p>
   )
 }
@@ -139,15 +158,11 @@ export default function ProblemList({ companies }) {
 
   const quickPick = FAANG.filter((c) => companies.includes(c))
 
-  function handleQuickPick(company) {
-    setSelectedCompanies([company])
-  }
+  function handleQuickPick(company) { setSelectedCompanies([company]) }
 
   function handleMoreClick() {
     setLanded(true)
-    setTimeout(() => {
-      selectorRef.current?.querySelector('input')?.focus()
-    }, 150)
+    setTimeout(() => selectorRef.current?.querySelector('input')?.focus(), 150)
   }
 
   if (!hydrated) return null
@@ -155,121 +170,124 @@ export default function ProblemList({ companies }) {
   // ── LANDING ──────────────────────────────────────────────────────────────
   if (!landed) {
     return (
-      <div style={{
+      <div className="landing-bg" style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 'calc(100vh - 58px)',
-        padding: '0 24px 60px',
+        justifyContent: 'center', minHeight: 'calc(100vh - 58px)',
+        padding: '0 24px 60px', position: 'relative',
       }}>
-        {/* Logo */}
-        <img
-          src="/logo.png"
-          alt="Leetie"
-          style={{ width: 110, height: 110, borderRadius: 28, objectFit: 'contain', marginBottom: 18 }}
-          onError={(e) => (e.currentTarget.style.display = 'none')}
-        />
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+          {/* Logo */}
+          <img
+            src="/logo.png"
+            alt="Leetie"
+            className="float"
+            style={{ width: 130, height: 130, objectFit: 'contain', marginBottom: 20 }}
+            onError={(e) => (e.currentTarget.style.display = 'none')}
+          />
 
-        {/* Brand name */}
-        <h1 className="font-display" style={{
-          fontSize: 56, fontWeight: 800, letterSpacing: '-0.04em',
-          color: 'var(--text)', marginBottom: 12, textAlign: 'center', lineHeight: 1,
-        }}>
-          Leet<span style={{ color: 'var(--accent)' }}>ie</span>
-        </h1>
+          {/* Brand */}
+          <h1 className="font-display" style={{
+            fontSize: 64, fontWeight: 800, letterSpacing: '-0.05em',
+            color: 'var(--text)', marginBottom: 14, textAlign: 'center', lineHeight: 1,
+          }}>
+            Leet<span style={{ color: 'var(--accent)' }}>ie</span>
+          </h1>
 
-        {/* Description */}
-        <p style={{
-          fontSize: 15, color: 'var(--text-muted)', textAlign: 'center',
-          maxWidth: 460, lineHeight: 1.7, marginBottom: 48,
-        }}>
-          Company-wise LeetCode problems sorted by real interview frequency.
-          Track progress, set timers, take notes — just a small attempt.
-        </p>
+          <p style={{
+            fontSize: 15, color: 'var(--text-muted)', textAlign: 'center',
+            maxWidth: 460, lineHeight: 1.75, marginBottom: 48,
+          }}>
+            Company-wise LeetCode problems sorted by real interview frequency.
+            Track progress, set timers, take notes — all stored locally.
+          </p>
 
-        {/* Company picker card */}
-        <div style={{
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border)',
-          borderRadius: 16,
-          padding: '32px 40px',
-          width: '100%',
-          maxWidth: 720,
-        }}>
-          <AnimatedHeading />
+          {/* Picker card */}
+          <div style={{
+            background: 'rgba(13,17,23,0.85)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid var(--border)',
+            borderRadius: 18,
+            padding: '32px 44px',
+            width: '100%',
+            maxWidth: 780,
+          }}>
+            <AnimatedHeading />
 
-          {/* Colorful company buttons */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 16 }}>
-            {quickPick.map((c, i) => {
-              const col = COMPANY_COLORS[i % COMPANY_COLORS.length]
-              return (
+            {/* Company buttons — single neutral color, icon */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 18 }}>
+              {quickPick.map((c) => (
                 <button
                   key={c}
                   onClick={() => handleQuickPick(c)}
                   style={{
-                    padding: '11px 22px',
-                    background: col.bg,
-                    border: `1px solid ${col.border}`,
-                    borderRadius: 9,
-                    color: col.text,
-                    fontSize: 14,
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '11px 20px',
+                    background: 'var(--bg-hover)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 10,
+                    color: 'var(--text)',
+                    fontSize: 14, fontWeight: 500,
+                    cursor: 'pointer', transition: 'all 0.15s',
                     fontFamily: 'inherit',
-                    letterSpacing: '-0.01em',
                   }}
                   onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--accent)'
+                    e.currentTarget.style.color = 'var(--accent)'
+                    e.currentTarget.style.background = 'var(--accent-dim)'
                     e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.boxShadow = `0 6px 20px ${col.border}`
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(240,136,62,0.2)'
                   }}
                   onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--border)'
+                    e.currentTarget.style.color = 'var(--text)'
+                    e.currentTarget.style.background = 'var(--bg-hover)'
                     e.currentTarget.style.transform = 'translateY(0)'
                     e.currentTarget.style.boxShadow = 'none'
                   }}
                 >
+                  <CompanyIcon name={c} size={15} />
                   {c}
                 </button>
-              )
-            })}
+              ))}
+            </div>
 
-            {/* More button — highlighted with accent glow */}
-            <button
-              onClick={handleMoreClick}
-              className="pulse"
-              style={{
-                padding: '11px 22px',
-                background: 'var(--accent-dim)',
-                border: '1px solid var(--accent)',
-                borderRadius: 9,
-                color: 'var(--accent)',
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 8,
-                transition: 'all 0.15s',
-                fontFamily: 'inherit',
-                letterSpacing: '-0.01em',
-                boxShadow: '0 0 16px rgba(240,136,62,0.2)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 6px 24px rgba(240,136,62,0.35)'
-                e.currentTarget.style.animationPlayState = 'paused'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 0 16px rgba(240,136,62,0.2)'
-                e.currentTarget.style.animationPlayState = 'running'
-              }}
-            >
-              <Search size={14} />
-              Search among {companies.length} companies
-            </button>
+            {/* Search button — accent glow */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+              <button
+                onClick={handleMoreClick}
+                className="glow-pulse"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '13px 32px',
+                  background: 'var(--accent-dim)',
+                  border: '1px solid var(--accent)',
+                  borderRadius: 10,
+                  color: 'var(--accent)',
+                  fontSize: 14, fontWeight: 600,
+                  cursor: 'pointer', fontFamily: 'inherit',
+                  letterSpacing: '-0.01em',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(240,136,62,0.22)'
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.animationPlayState = 'paused'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--accent-dim)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.animationPlayState = 'running'
+                }}
+              >
+                <Search size={15} />
+                Search among {companies.length} companies
+              </button>
+            </div>
+
+            <p style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center' }}>
+              Click any company above, or search for a specific one
+            </p>
           </div>
-
-          <p style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center' }}>
-            Click any company above, or search for a specific one
-          </p>
         </div>
       </div>
     )
@@ -310,9 +328,7 @@ export default function ProblemList({ companies }) {
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>
             Search and select a company above
           </p>
-          <p style={{ fontSize: 11, color: 'var(--text-dim)' }}>
-            {companies.length} companies available
-          </p>
+          <p style={{ fontSize: 11, color: 'var(--text-dim)' }}>{companies.length} companies available</p>
         </div>
       )}
 

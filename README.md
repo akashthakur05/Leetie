@@ -1,23 +1,4 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./public/logo_dark.png">
-    <img src="./public/logo_light.png" width="140" alt="Leetie Logo"/>
-  </picture>
-</p>
-
-<h1 align="center">Leetie 👋</h1>
-
-<p align="center">
-  <b>Open-source company-wise LeetCode intelligence dashboard.</b>
-  <br />
-  Track interview trends, organize preparation, and build a smarter grinding workflow.
-</p>
-
-<p align="center">
-  If this project helps your interview prep, consider giving it a ⭐
-</p>
-
-<p align="center">
   <a href="https://github.com/amitjomy007/Leetie/stargazers">
     <img src="https://img.shields.io/github/stars/amitjomy007/Leetie?style=for-the-badge" />
   </a>
@@ -30,6 +11,29 @@
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/github/license/amitjomy007/Leetie?style=for-the-badge" />
   </a>
+  <a href="https://github.com/amitjomy007/Leetie/pulls">
+    <img src="https://img.shields.io/badge/PRs-Welcome-success?style=for-the-badge" />
+  </a>
+</p>
+
+<br />
+
+<p align="center">
+  <img src="./public/logo.png" width="140" alt="Leetie Logo"/>
+</p>
+
+<h1 align="center">
+  Leet<span style="color:#f0883e">ie</span>
+</h1>
+
+<p align="center">
+  <b>Open-source company-wise LeetCode intelligence dashboard.</b>
+  <br />
+  Track interview trends, organize preparation, and build a smarter grinding workflow.
+</p>
+
+<p align="center">
+  If this project helps your interview prep, consider giving it a ⭐ — it helps more people discover it.
 </p>
 
 <p align="center">
@@ -45,17 +49,11 @@
   <a href="https://github.com/amitjomy007">
     <img src="https://img.shields.io/badge/GitHub-amitjomy007-181717?style=flat-square&logo=github" />
   </a>
-
   <a href="https://www.linkedin.com/in/amitjomy/">
     <img src="https://img.shields.io/badge/LinkedIn-Amit%20Jomy-blue?style=flat-square&logo=linkedin" />
   </a>
-
   <a href="https://github.com/amitjomy007/Leetie/issues">
     <img src="https://img.shields.io/badge/Contributions-Welcome-success?style=flat-square" />
-  </a>
-
-  <a href="https://github.com/amitjomy007/Leetie/pulls">
-    <img src="https://img.shields.io/badge/PRs-Welcome-success?style=flat-square" />
   </a>
 </p>
 
@@ -98,11 +96,13 @@ Designed for serious interview preparation with a clean, premium desktop-first w
 - Mark problems as completed
 - Completion date tracking
 - Star important problems
-- Persistent personal notes
+- Persistent personal notes with hidden section
 - Timer + open LeetCode workflow
 - Pause/reset timers
 - Hide completed problems toggle
 - Starred-only mode
+- Tag reveal system (per-tag and global)
+- Dark / light theme with no flash
 - localStorage persistence across refreshes and browser restarts
 - Graceful handling for empty CSV datasets
 - Responsive desktop-first UI
@@ -134,30 +134,52 @@ Coming soon via Vercel deployment.
 
 ## ⚡ Quick Start
 
-### Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/amitjomy007/Leetie.git
 cd Leetie
 ```
 
-### Install dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### Run development server
+### 3. Add the brain dataset
+
+Leetie reads problem data from `public/brain/`. Clone the upstream dataset and copy the folders:
+
+```bash
+git clone https://github.com/liquidslr/interview-company-wise-problems.git
+cp -r interview-company-wise-problems/* public/brain/
+```
+
+Expected structure:
+
+```txt
+public/
+  brain/
+    Google/
+      1. Thirty Days.csv
+      2. Three Months.csv
+      3. Six Months.csv
+      4. More Than Six Months.csv
+      5. All.csv
+    Amazon/
+      ...
+    Adobe/
+      ...
+```
+
+### 4. Run development server
 
 ```bash
 npm run dev
 ```
 
-Open:
-
-```txt
-http://localhost:3000
-```
+Open: `http://localhost:3000`
 
 ---
 
@@ -197,6 +219,7 @@ components/
 
 lib/
   csv.js
+  companyLogos.js
   filters.js
   storage.js
 ```
@@ -207,124 +230,55 @@ lib/
 
 ### Composable Filtering Pipeline
 
-Filtering logic is intentionally modular.
-
-Adding new filters requires:
-
-- one filter condition
-- one UI control
-
-without rewriting the entire pipeline.
-
----
+Filtering logic is intentionally modular. Adding new filters requires one filter condition and one UI control — nothing else changes.
 
 ### Persistent State Management
 
-localStorage powers:
-
-- completed problems
-- starred problems
-- notes
-- timers
-- completion history
-
-Everything survives:
-
-- refreshes
-- browser restarts
-- navigation
-
----
+localStorage powers completed problems, starred problems, notes, timers, and completion history. Everything survives refreshes, browser restarts, and navigation.
 
 ### Optimized Rendering
 
 - memoized problem rows
-- cached company datasets
-- minimized rerenders
-- efficient filtering/sorting
+- module-level cached company datasets
+- in-flight deduplication
+- efficient filtering/sorting pipeline
 
-Designed for large datasets and fast interaction.
-
----
+Designed for large datasets (400+ companies, thousands of problems) and fast interaction.
 
 ### No Hardcoded Data
 
-Leetie dynamically discovers:
-
-- companies
-- ranges
-- datasets
-
-directly from the dataset structure.
-
-No fake or placeholder data is used.
+Leetie dynamically discovers companies, ranges, and datasets directly from the filesystem. No fake or placeholder data is used.
 
 ---
 
 ## 🙌 Credits
 
-Leetie is built on top of the amazing:
+Leetie is built on top of the amazing **interview-company-wise-problems** dataset maintained by [@liquidslr](https://github.com/liquidslr).
 
-**interview-company-wise-problems**
+Huge thanks for maintaining one of the most useful open-source interview preparation datasets available.
 
-dataset maintained by:
-
-https://github.com/liquidslr
-
-Huge thanks to the creator and contributors for maintaining one of the most useful open-source interview preparation datasets available.
-
-Dataset repository:
-
-https://github.com/liquidslr/interview-company-wise-problems
+Dataset repository: https://github.com/liquidslr/interview-company-wise-problems
 
 ---
 
 ## 📄 Dataset / CSV Structure
-
-If you'd like to extend the dataset with additional companies or newer interview data, CSV files should follow the existing structure.
-
-Example:
 
 ```csv
 Difficulty,Title,Frequency,Acceptance Rate,Link,Topics
 MEDIUM,Two Sum,100.0,0.52,https://leetcode.com/problems/two-sum,"Array, Hash Table"
 ```
 
-Expected directory structure:
-
-```txt
-brain/
-  Google/
-    1. Thirty Days.csv
-    2. Three Months.csv
-    3. Six Months.csv
-    4. More Than Six Months.csv
-    5. All.csv
-
-  Amazon/
-    ...
-
-  Adobe/
-    ...
-```
-
-Leetie gracefully handles:
-
-- empty CSVs
-- malformed rows
-- missing values
-- inconsistent datasets
+Leetie gracefully handles empty CSVs, malformed rows, missing values, and inconsistent datasets.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome.
+Contributions, issues, and feature requests are welcome. Check the [issues page](https://github.com/amitjomy007/Leetie/issues).
 
 Possible contribution areas:
 
-- new filters
-- new sorting modes
+- new filters or sorting modes
 - performance optimization
 - accessibility improvements
 - mobile polish
@@ -335,34 +289,15 @@ Possible contribution areas:
 
 ### Contribution Workflow
 
-1. Fork the repository
-
-2. Create your feature branch
-
 ```bash
+# Fork, then:
 git checkout -b feature/amazing-feature
-```
-
-3. Commit your changes
-
-```bash
 git commit -m "Add amazing feature"
-```
-
-4. Push to the branch
-
-```bash
 git push origin feature/amazing-feature
+# Open a Pull Request
 ```
 
-5. Open a Pull Request
-
-Please:
-
-- keep the project JavaScript-only
-- follow existing architecture patterns
-- avoid unnecessary dependencies
-- keep components modular
+Please keep the project JavaScript-only, follow existing architecture patterns, and avoid unnecessary dependencies.
 
 ---
 
@@ -370,18 +305,18 @@ Please:
 
 - [x] Company-wise filtering
 - [x] Persistent progress tracking
-- [x] Notes system
+- [x] Notes system with hidden section
 - [x] Timer workflow
+- [x] Tag reveal system
+- [x] Dark / light theme
 - [ ] Topic-based filtering
 - [ ] Heatmap analytics
-- [ ] Contest integration
 - [ ] Study plan mode
 - [ ] PWA support
 - [ ] Keyboard shortcuts
 - [ ] Advanced statistics dashboard
 - [ ] Google login & cloud sync
-- [ ] User-based persistent storage
-- [ ] Public deployment if the project receives good community response
+- [ ] Public deployment
 
 ---
 
@@ -393,7 +328,6 @@ Please:
   <a href="https://github.com/amitjomy007">
     <img src="https://img.shields.io/badge/GitHub-amitjomy007-181717?style=for-the-badge&logo=github" />
   </a>
-
   <a href="https://www.linkedin.com/in/amitjomy/">
     <img src="https://img.shields.io/badge/LinkedIn-Amit%20Jomy-blue?style=for-the-badge&logo=linkedin" />
   </a>
@@ -403,18 +337,12 @@ Please:
 
 ## ⭐ Show Your Support
 
-If this project helped your interview preparation, consider giving it a star.
+If Leetie helped your interview preparation, please [give it a star](https://github.com/amitjomy007/Leetie/stargazers).
 
-It helps:
-
-- more people discover the project
-- grow the open-source community
-- motivate future development
+It helps more people discover the project, grows the open-source community, and motivates future development.
 
 ---
 
 ## 📜 License
 
-Copyright © 2026 Amit Jomy
-
-This project is MIT licensed.
+Copyright © 2026 Amit Jomy. MIT licensed.

@@ -1,9 +1,23 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
-import { X, Search } from 'lucide-react'
+import { X, Search, Building2 } from 'lucide-react'
+import { getCompanyLogoUrl } from '@/lib/companyLogos'
 
 const VISIBLE_LIMIT = 40
+
+function CompanyIcon({ name, size = 13 }) {
+  const [failed, setFailed] = useState(false)
+  const url = getCompanyLogoUrl(name)
+  if (!url || failed) return <Building2 size={size} style={{ flexShrink: 0, color: 'var(--text-dim)' }} />
+  return (
+    <img
+      src={url} alt="" width={size} height={size}
+      style={{ flexShrink: 0, objectFit: 'contain', opacity: 0.7 }}
+      onError={() => setFailed(true)}
+    />
+  )
+}
 
 export default function CompanySelector({ companies, selected, onChange }) {
   const [query, setQuery] = useState('')
@@ -41,9 +55,7 @@ export default function CompanySelector({ companies, selected, onChange }) {
     onChange(selected.filter((c) => c !== company))
   }, [selected, onChange])
 
-  useEffect(() => {
-    setVisibleCount(VISIBLE_LIMIT)
-  }, [query])
+  useEffect(() => { setVisibleCount(VISIBLE_LIMIT) }, [query])
 
   useEffect(() => {
     function handleClick(e) {
@@ -66,11 +78,11 @@ export default function CompanySelector({ companies, selected, onChange }) {
         <Search size={14} style={{ color: 'var(--text-dim)', alignSelf: 'center', flexShrink: 0 }} />
         {selected.map((c) => (
           <span key={c} style={{
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-            padding: '2px 8px',
+            display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 8px',
             background: 'var(--accent-dim)', border: '1px solid rgba(240,136,62,0.3)',
             borderRadius: 4, fontSize: 12, color: 'var(--accent)',
           }}>
+            <CompanyIcon name={c} size={12} />
             {c}
             <button
               onClick={(e) => { e.stopPropagation(); remove(c) }}
@@ -94,14 +106,15 @@ export default function CompanySelector({ companies, selected, onChange }) {
       </div>
 
       {open && (
-        <div style={{
-          position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
-          background: 'var(--bg-card)', border: '1px solid var(--border)',
-          borderRadius: 8, zIndex: 100, maxHeight: 300, overflowY: 'auto',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-        }}
+        <div
           ref={listRef}
           onScroll={handleScroll}
+          style={{
+            position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
+            background: 'var(--bg-card)', border: '1px solid var(--border)',
+            borderRadius: 8, zIndex: 100, maxHeight: 300, overflowY: 'auto',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          }}
         >
           {visible.length === 0 && (
             <div style={{ padding: '14px 16px', fontSize: 12, color: 'var(--text-dim)' }}>
@@ -113,7 +126,8 @@ export default function CompanySelector({ companies, selected, onChange }) {
               key={c}
               onMouseDown={(e) => { e.preventDefault(); add(c) }}
               style={{
-                display: 'block', width: '100%', padding: '9px 14px',
+                display: 'flex', alignItems: 'center', gap: 9,
+                width: '100%', padding: '9px 14px',
                 background: 'none', border: 'none',
                 borderBottom: '1px solid var(--border)',
                 textAlign: 'left', color: 'var(--text)', fontSize: 13,
@@ -122,6 +136,7 @@ export default function CompanySelector({ companies, selected, onChange }) {
               onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-hover)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
             >
+              <CompanyIcon name={c} size={13} />
               {c}
             </button>
           ))}
