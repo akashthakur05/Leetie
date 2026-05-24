@@ -300,7 +300,7 @@ Please keep the project JavaScript-only, follow existing architecture patterns, 
 
 ## ⭐ Show Your Support
 
-If you liked this project, please [give it a star](https://github.com/amitjomy007/Leetie/stargazers).
+If you liked this project, please give it a star ⭐
 
 It helps more people discover the project, grows the open-source community, and motivates future development.
 
