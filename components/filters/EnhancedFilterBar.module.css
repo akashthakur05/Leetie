@@ -1,0 +1,284 @@
+.filterBar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.searchBox {
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 0 3px rgba(0, 100, 255, 0.1);
+}
+
+.searchInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filterDropdown {
+  position: relative;
+}
+
+.filterButton {
+  padding: 0.6rem 1rem;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.filterButton:hover {
+  border-color: var(--accent);
+  background: var(--bg);
+}
+
+.filterButton.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg);
+}
+
+.arrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.filterButton:hover .arrow {
+  transform: translateY(2px);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.dropdownContent {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.checkboxLabel:hover {
+  background: var(--hover-bg);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.sortOption {
+  padding: 0.6rem 0.75rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.sortOption:hover {
+  background: var(--hover-bg);
+}
+
+.sortOption.selected {
+  background: var(--hover-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.difficulty-easy {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.difficulty-medium {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.difficulty-hard {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.4rem;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-left: auto;
+}
+
+.viewButton {
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewButton:hover {
+  color: var(--text);
+  background: var(--bg);
+}
+
+.viewButton.active {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.clearButton {
+  padding: 0.6rem 1rem;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.clearButton:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+@media (max-width: 768px) {
+  .filterBar {
+    padding: 1rem;
+  }
+
+  .filterControls {
+    gap: 0.5rem;
+  }
+
+  .filterButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .dropdown {
+    min-width: 150px;
+    max-width: 300px;
+  }
+
+  .viewToggle {
+    margin-left: auto;
+    margin-top: 0.5rem;
+  }
+
+  .clearButton {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .filterControls {
+    flex-direction: column;
+  }
+
+  .filterButton {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .viewToggle {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  .clearButton {
+    width: 100%;
+  }
+
+  .dropdown {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    max-width: none;
+  }
+}

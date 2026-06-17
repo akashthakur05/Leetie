@@ -1,6 +1,12 @@
 {
   "name": "leetie",
-  "version": "0.1.0",
+  "version": "2.0.0",
+  "description": "Open-source company-wise LeetCode intelligence dashboard for interview preparation",
+  "author": "Akash Singh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akashthakur05/Leetie"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",

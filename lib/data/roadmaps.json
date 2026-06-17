@@ -1,0 +1,172 @@
+{
+  "beginner": {
+    "id": "beginner",
+    "name": "Beginner Roadmap",
+    "description": "A structured path for those new to coding interviews. Start with fundamental data structures and build confidence with core patterns.",
+    "phases": [
+      {
+        "id": 1,
+        "title": "Phase 1: Arrays & Hash Tables",
+        "description": "Learn the two most fundamental data structures. Arrays teach you iteration and indexing; hash tables give you O(1) lookups.",
+        "problems": ["contains-duplicate", "two-sum", "find-all-numbers-disappeared-in-an-array", "best-time-to-buy-and-sell-stock", "valid-palindrome", "longest-substring-without-repeating-characters"]
+      },
+      {
+        "id": 2,
+        "title": "Phase 2: Two Pointers & Sliding Window",
+        "description": "Master pointer manipulation and window expansion/contraction techniques for solving linear problems efficiently.",
+        "problems": ["3sum", "container-with-most-water", "minimum-window-substring", "trapping-rain-water", "longest-repeating-character-replacement"]
+      },
+      {
+        "id": 3,
+        "title": "Phase 3: Stack & Queue",
+        "description": "Learn LIFO and FIFO data structures and their real-world applications in parsing and breadth-first operations.",
+        "problems": ["valid-parentheses", "min-stack", "evaluate-reverse-polish-notation", "daily-temperatures", "sliding-window-maximum"]
+      },
+      {
+        "id": 4,
+        "title": "Phase 4: Linked Lists",
+        "description": "Understand pointer manipulation, reversal, and classic linked list patterns.",
+        "problems": ["reverse-linked-list", "merge-two-sorted-lists", "reorder-list", "remove-nth-node-from-end-of-list", "copy-list-with-random-pointer"]
+      },
+      {
+        "id": 5,
+        "title": "Phase 5: Trees & Graphs",
+        "description": "Master tree traversals (DFS, BFS) and fundamental graph problems.",
+        "problems": ["invert-binary-tree", "maximum-depth-of-binary-tree", "same-tree", "subtree-of-another-tree", "lowest-common-ancestor-of-a-binary-search-tree", "number-of-islands", "course-schedule"]
+      },
+      {
+        "id": 6,
+        "title": "Phase 6: Binary Search",
+        "description": "Learn when and how to apply binary search to problem-solving beyond sorted arrays.",
+        "problems": ["binary-search", "search-insert-position", "first-bad-version", "search-in-rotated-sorted-array", "find-minimum-in-rotated-sorted-array"]
+      },
+      {
+        "id": 7,
+        "title": "Phase 7: Dynamic Programming Basics",
+        "description": "Start with simple DP problems using memoization and work toward complex optimizations.",
+        "problems": ["climbing-stairs", "house-robber", "coin-change", "longest-increasing-subsequence", "longest-common-subsequence"]
+      },
+      {
+        "id": 8,
+        "title": "Phase 8: Greedy & Intervals",
+        "description": "Learn when greedy algorithms work and how to solve interval scheduling problems.",
+        "problems": ["jump-game", "jump-game-ii", "interval-scheduling", "merge-intervals", "meeting-rooms"]
+      },
+      {
+        "id": 9,
+        "title": "Phase 9: Bit Manipulation",
+        "description": "Understand bitwise operations and their applications in solving problems efficiently.",
+        "problems": ["single-number", "number-of-1-bits", "reverse-bits", "bitwise-and-of-numbers-range", "sum-of-two-integers"]
+      },
+      {
+        "id": 10,
+        "title": "Phase 10: Heap & Sorting",
+        "description": "Master heap operations and sorting algorithms for optimization problems.",
+        "problems": ["merge-k-sorted-lists", "top-k-frequent-elements", "kth-largest-element-in-an-array", "meeting-rooms-ii", "reorganize-string"]
+      },
+      {
+        "id": 11,
+        "title": "Phase 11: Advanced Patterns",
+        "description": "Tackle complex problems combining multiple techniques learned so far.",
+        "problems": ["word-ladder", "palindrome-partitioning", "generate-parentheses", "permutations", "subsets"]
+      }
+    ]
+  },
+  "experienced": {
+    "id": "experienced",
+    "name": "Experienced Roadmap (Blind 75)",
+    "description": "The famous Blind 75 problemset. High-value questions that appear frequently in FAANG interviews. Complete these to master core patterns.",
+    "phases": [
+      {
+        "id": 1,
+        "title": "Array & Hashing",
+        "description": "Foundation of coding interviews",
+        "problems": ["contains-duplicate", "valid-anagram", "two-sum", "group-anagrams", "top-k-frequent-elements", "encode-and-decode-strings"]
+      },
+      {
+        "id": 2,
+        "title": "Two Pointers",
+        "description": "Efficient linear traversal techniques",
+        "problems": ["valid-palindrome", "two-sum-ii-input-array-is-sorted", "3sum", "container-with-most-water", "trapping-rain-water"]
+      },
+      {
+        "id": 3,
+        "title": "Sliding Window",
+        "description": "Window expansion and contraction",
+        "problems": ["best-time-to-buy-and-sell-stock", "longest-substring-without-repeating-characters", "longest-repeating-character-replacement", "minimum-window-substring", "sliding-window-maximum"]
+      },
+      {
+        "id": 4,
+        "title": "Stack",
+        "description": "LIFO data structure applications",
+        "problems": ["valid-parentheses", "min-stack", "evaluate-reverse-polish-notation", "daily-temperatures"]
+      },
+      {
+        "id": 5,
+        "title": "Binary Search",
+        "description": "O(log n) search techniques",
+        "problems": ["binary-search", "search-insert-position", "search-in-rotated-sorted-array", "find-minimum-in-rotated-sorted-array", "time-based-key-value-store"]
+      },
+      {
+        "id": 6,
+        "title": "Linked List",
+        "description": "Pointer manipulation and traversal",
+        "problems": ["reverse-linked-list", "merge-two-sorted-lists", "reorder-list", "remove-nth-node-from-end-of-list", "copy-list-with-random-pointer", "add-two-numbers"]
+      },
+      {
+        "id": 7,
+        "title": "Trees",
+        "description": "Tree traversal and manipulation",
+        "problems": ["invert-binary-tree", "maximum-depth-of-binary-tree", "diameter-of-binary-tree", "same-tree", "subtree-of-another-tree", "lowest-common-ancestor-of-a-binary-search-tree", "binary-tree-level-order-traversal", "serialize-and-deserialize-binary-tree", "subtree-of-another-tree", "construct-binary-tree-from-preorder-and-inorder-traversal", "validate-binary-search-tree", "kth-smallest-element-in-a-bst"]
+      },
+      {
+        "id": 8,
+        "title": "Tries",
+        "description": "Prefix tree data structure",
+        "problems": ["implement-trie-prefix-tree", "design-add-and-search-words-data-structure", "word-search-ii"]
+      },
+      {
+        "id": 9,
+        "title": "Heap",
+        "description": "Priority queue operations",
+        "problems": ["merge-k-sorted-lists", "top-k-frequent-elements", "find-median-from-data-stream"]
+      },
+      {
+        "id": 10,
+        "title": "Graphs",
+        "description": "Graph traversal and algorithms",
+        "problems": ["number-of-islands", "clone-graph", "course-schedule", "course-schedule-ii", "alien-dictionary", "graph-valid-tree", "number-of-connected-components-in-an-undirected-graph"]
+      },
+      {
+        "id": 11,
+        "title": "Advanced Graphs",
+        "description": "Complex graph problems",
+        "problems": ["pacific-atlantic-water-flow", "longest-increasing-path-in-a-matrix", "word-ladder", "word-ladder-ii", "reconstruct-itinerary"]
+      },
+      {
+        "id": 12,
+        "title": "1-D DP",
+        "description": "1D dynamic programming",
+        "problems": ["climbing-stairs", "house-robber", "coin-change", "longest-increasing-subsequence", "word-break", "longest-palindromic-substring", "unique-paths-ii", "jump-game", "jump-game-ii"]
+      },
+      {
+        "id": 13,
+        "title": "2-D DP",
+        "description": "2D dynamic programming",
+        "problems": ["unique-paths", "longest-common-subsequence", "edit-distance"]
+      },
+      {
+        "id": 14,
+        "title": "Greedy",
+        "description": "Greedy algorithm techniques",
+        "problems": ["jump-game", "gas-station", "hand-of-straights", "merge-triplets-to-form-target-triplet", "partition-labels", "valid-parenthesis-string"]
+      },
+      {
+        "id": 15,
+        "title": "Intervals",
+        "description": "Interval-based problems",
+        "problems": ["insert-interval", "merge-intervals", "non-overlapping-intervals", "meeting-rooms", "meeting-rooms-ii"]
+      }
+    ]
+  }
+}
