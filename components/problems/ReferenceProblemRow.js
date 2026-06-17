@@ -4,19 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useProblemState } from '@/lib/storage';
 import styles from './ReferenceProblemRow.module.css';
 
-// Company logo URLs mapping
-const COMPANY_LOGOS = {
-  google: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
-  amazon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-  facebook: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.svg',
-  microsoft: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg',
-  apple: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
-  goldman: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Goldman_Sachs.svg',
-  jpmorgan: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/JPMorgan_Chase_%26_Co._Logo_2008-2014.svg',
-  uber: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Uber_logo.svg',
-  netflix: 'https://upload.wikimedia.org/wikipedia/commons/6/69/Netflix_logo.svg',
-  adobe: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Adobe_Systems_logo_and_wordmark.svg',
-};
+import { getCompanyLogoData } from '@/lib/companyLogoService';
 
 export default function ReferenceProblemRow({ problem, compact = false }) {
   const [state, setState] = useState({});
@@ -148,17 +136,25 @@ export default function ReferenceProblemRow({ problem, compact = false }) {
 
         {problem.companies && problem.companies.length > 0 && (
           <div className={styles.companiesRow}>
-            {problem.companies.slice(0, 8).map((company) => (
-              <div
-                key={company.slug}
-                className={styles.companyBadge}
-                title={`${company.name} (${company.frequency} times)`}
-              >
-                <span className={styles.companyInitial}>
-                  {company.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            ))}
+            {problem.companies.slice(0, 8).map((company) => {
+              const logoData = getCompanyLogoData(company.slug);
+              return (
+                <div
+                  key={company.slug}
+                  className={styles.companyBadge}
+                  title={`${logoData.name} (${company.frequency})`}
+                  style={{
+                    backgroundColor: logoData.bgColor,
+                    color: logoData.color,
+                    borderColor: logoData.color,
+                  }}
+                >
+                  <span className={styles.companyInitial}>
+                    {logoData.initials}
+                  </span>
+                </div>
+              );
+            })}
             {problem.companies.length > 8 && (
               <div className={styles.moreCompanies}>
                 +{problem.companies.length - 8}
@@ -174,21 +170,44 @@ export default function ReferenceProblemRow({ problem, compact = false }) {
         )}
       </div>
 
-      <button
-        onClick={() => setShowHint(!showHint)}
-        className={styles.hintButton}
-        title="Show hint"
-      >
-        💡 {showHint ? 'Hide' : 'Show'} hint
-      </button>
+      <div className={styles.metricsRow}>
+        {frequency && (
+          <span className={styles.frequency} title="Frequency score">
+            {frequency}
+          </span>
+        )}
+        {problem.acceptance && (
+          <span className={styles.acceptance} title="Acceptance rate">
+            {problem.acceptance}%
+          </span>
+        )}
+      </div>
 
-      <button
-        onClick={handleToggleStar}
-        className={`${styles.starButton} ${starred ? styles.starred : ''}`}
-        title="Star this problem"
-      >
-        ★
-      </button>
+      <div className={styles.actions}>
+        <button
+          onClick={() => setShowHint(!showHint)}
+          className={styles.hintButton}
+          title="Show hint"
+        >
+          💡 {showHint ? 'Hide' : 'Show'}
+        </button>
+
+        <button
+          onClick={openLeetCode}
+          className={styles.solveButton}
+          title="Solve on LeetCode"
+        >
+          ▶ Solve
+        </button>
+
+        <button
+          onClick={handleToggleStar}
+          className={`${styles.starButton} ${starred ? styles.starred : ''}`}
+          title="Star this problem"
+        >
+          ★
+        </button>
+      </div>
     </div>
   );
 }

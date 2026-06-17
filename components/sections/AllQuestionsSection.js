@@ -4,6 +4,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import questionsData from '@/lib/data/questions.json';
 import ReferenceProblemRow from '../problems/ReferenceProblemRow';
 import EnhancedFilterBar from '../filters/EnhancedFilterBar';
+import ImportExportUI from '../ImportExportUI';
+import { useLazyLoad } from '@/lib/useLazyLoad';
 import styles from './AllQuestionsSection.module.css';
 
 export default function AllQuestionsSection() {
@@ -17,6 +19,9 @@ export default function AllQuestionsSection() {
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'pattern'
   const [loading, setLoading] = useState(true);
   const [hydrated, setHydrated] = useState(false);
+  
+  // Lazy loading for list view
+  const lazyLoad = useLazyLoad(filteredProblems);
 
   // Load problems
   useEffect(() => {
@@ -137,11 +142,13 @@ export default function AllQuestionsSection() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>All {filteredProblems.length} Questions</h1>
+        <h1>All Questions</h1>
         <p className={styles.subtitle}>
           Explore all {allProblems.length} problems organized by patterns and companies
         </p>
       </div>
+
+      <ImportExportUI />
 
       <EnhancedFilterBar
         searchQuery={searchQuery}
@@ -190,9 +197,20 @@ export default function AllQuestionsSection() {
         </div>
       ) : (
         <div className={styles.listView}>
-          {filteredProblems.map(problem => (
+          {lazyLoad.displayedItems.map(problem => (
             <ReferenceProblemRow key={problem.slug} problem={problem} />
           ))}
+          {lazyLoad.hasMore && (
+            <div className={styles.loadingMore} ref={lazyLoad.observerTarget}>
+              <div className={styles.spinner}></div>
+              <p>Loading more problems...</p>
+            </div>
+          )}
+          {!lazyLoad.hasMore && lazyLoad.loadedCount > 0 && (
+            <div className={styles.endMessage}>
+              <p>All {lazyLoad.loadedCount} problems loaded</p>
+            </div>
+          )}
         </div>
       )}
     </div>
