@@ -19,9 +19,6 @@ export default function AllQuestionsSection() {
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'pattern'
   const [loading, setLoading] = useState(true);
   const [hydrated, setHydrated] = useState(false);
-  
-  // Lazy loading for list view
-  const lazyLoad = useLazyLoad(filteredProblems);
 
   // Load problems
   useEffect(() => {
@@ -117,6 +114,9 @@ export default function AllQuestionsSection() {
 
     setFilteredProblems(filtered);
   }, [selectedPatterns, selectedDifficulty, selectedCompanies, searchQuery, sortBy, allProblems]);
+
+  // Lazy loading for list view - initialize after filteredProblems is set
+  const lazyLoad = useLazyLoad(filteredProblems);
 
   // Group by pattern for pattern view
   const groupedByPattern = useMemo(() => {

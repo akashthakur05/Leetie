@@ -1,17 +1,17 @@
 <p align="center">
-  <a href="https://github.com/amitjomy007/Leetie/stargazers">
-    <img src="https://img.shields.io/github/stars/amitjomy007/Leetie?style=for-the-badge" />
+  <a href="https://github.com/akashthakur05/Leetie/stargazers">
+    <img src="https://img.shields.io/github/stars/akashthakur05/Leetie?style=for-the-badge" />
   </a>
-  <a href="https://github.com/amitjomy007/Leetie/network/members">
-    <img src="https://img.shields.io/github/forks/amitjomy007/Leetie?style=for-the-badge" />
+  <a href="https://github.com/akashthakur05/Leetie/network/members">
+    <img src="https://img.shields.io/github/forks/akashthakur05/Leetie?style=for-the-badge" />
   </a>
-  <a href="https://github.com/amitjomy007/Leetie/issues">
-    <img src="https://img.shields.io/github/issues/amitjomy007/Leetie?style=for-the-badge" />
+  <a href="https://github.com/akashthakur05/Leetie/issues">
+    <img src="https://img.shields.io/github/issues/akashthakur05/Leetie?style=for-the-badge" />
   </a>
   <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/github/license/amitjomy007/Leetie?style=for-the-badge" />
+    <img src="https://img.shields.io/github/license/akashthakur05/Leetie?style=for-the-badge" />
   </a>
-  <a href="https://github.com/amitjomy007/Leetie/pulls">
+  <a href="https://github.com/akashthakur05/Leetie/pulls">
     <img src="https://img.shields.io/badge/PRs-Welcome-success?style=for-the-badge" />
   </a>
 </p>
@@ -46,13 +46,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/amitjomy007">
-    <img src="https://img.shields.io/badge/GitHub-amitjomy007-181717?style=flat-square&logo=github" />
+  <a href="https://github.com/akashthakur05">
+    <img src="https://img.shields.io/badge/GitHub-akashthakur05-181717?style=flat-square&logo=github" />
   </a>
-  <a href="https://www.linkedin.com/in/amitjomy/">
-    <img src="https://img.shields.io/badge/LinkedIn-Amit%20Jomy-blue?style=flat-square&logo=linkedin" />
-  </a>
-  <a href="https://github.com/amitjomy007/Leetie/issues">
+  <a href="https://github.com/akashthakur05/Leetie/issues">
     <img src="https://img.shields.io/badge/Contributions-Welcome-success?style=flat-square" />
   </a>
 </p>
